@@ -60,7 +60,10 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onScrollT
             }`}
           >
              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-violet-200 to-white animate-subtle-breathe drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
-               NSD-CORE/17B
+               NSD-CORE
+             </span>
+             <span className="text-violet-500 animate-subtle-breathe drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
+               /17B
              </span>
           </span>
 
@@ -74,7 +77,9 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onScrollT
             className="ml-auto md:ml-0 group relative px-4 py-1.5 rounded bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all duration-300 active:scale-95 overflow-hidden z-40"
         >
             <span className="relative z-10 flex items-center gap-2 text-[10px] font-mono tracking-wider text-white/70 group-hover:text-violet-200 transition-colors">
-                <LayoutDashboard className={`w-3 h-3 ${isHoveringDash ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }} />
+                <LayoutDashboard 
+                  className={`w-3 h-3 transition-all duration-300 ${isHoveringDash ? 'text-violet-400 scale-110' : 'text-white/70'}`} 
+                />
                 {isHoveringDash ? (
                     <span className="animate-pulse">ACCESS_DB</span>
                 ) : (

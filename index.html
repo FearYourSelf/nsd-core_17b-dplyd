@@ -24,6 +24,7 @@
             },
             animation: {
               'spin-slow': 'spin 20s linear infinite',
+              'spin-reverse-slow': 'spin-reverse 25s linear infinite',
               'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
               'float': 'float 6s ease-in-out infinite',
@@ -34,11 +35,17 @@
               'word-jitter': 'word-jitter 4s ease-in-out infinite',
               'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
               'scan': 'scan 3s linear infinite',
+              'hologram': 'hologram 2s linear infinite',
+              'wave': 'wave 10s linear infinite',
             },
             keyframes: {
               float: {
                 '0%, 100%': { transform: 'translateY(0)' },
                 '50%': { transform: 'translateY(-20px)' },
+              },
+              'spin-reverse': {
+                from: { transform: 'rotate(360deg)' },
+                to: { transform: 'rotate(0deg)' },
               },
               'pulse-glow': {
                 '0%, 100%': { opacity: 0.8, transform: 'scale(1)' },
@@ -76,6 +83,14 @@
                 '10%': { opacity: 1 },
                 '90%': { opacity: 1 },
                 '100%': { top: '100%', opacity: 0 },
+              },
+              'hologram': {
+                '0%': { backgroundPosition: '0% 0%' },
+                '100%': { backgroundPosition: '0% 100%' },
+              },
+              'wave': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '100%': { backgroundPosition: '100% 50%' },
               }
             }
           }
@@ -87,6 +102,9 @@
         background-color: #050507;
         color: #ffffff;
         overflow-x: hidden;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
       }
       .glass-panel {
         background: rgba(255, 255, 255, 0.03);
@@ -107,6 +125,41 @@
         );
         background-size: 100% 4px;
       }
+      /* 3D Tesseract / Cube Styles */
+      .scene-3d {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+      }
+      .tesseract-wrapper {
+        transform-style: preserve-3d;
+        animation: float-3d 8s ease-in-out infinite;
+      }
+      .cube-spinner {
+        transform-style: preserve-3d;
+        animation: rotate-cube 20s linear infinite;
+      }
+      .cube-face {
+        position: absolute;
+        box-sizing: border-box;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+        background: rgba(139, 92, 246, 0.02);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.05);
+        backface-visibility: visible;
+      }
+      .inner-cube .cube-face {
+        border: 1px solid rgba(99, 102, 241, 0.4);
+        background: rgba(99, 102, 241, 0.1);
+      }
+      
+      @keyframes rotate-cube {
+        0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+        100% { transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg); }
+      }
+      @keyframes float-3d {
+        0%, 100% { transform: translateY(0) rotateX(0); }
+        50% { transform: translateY(-20px) rotateX(5deg); }
+      }
+
       /* Global scrollbar hide */
       ::-webkit-scrollbar {
         display: none;

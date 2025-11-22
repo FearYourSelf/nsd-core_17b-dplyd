@@ -3,192 +3,203 @@ import React, { useEffect, useRef } from 'react';
 
 export const BackgroundEffects: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
+
+    const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
-    
-    const handleResize = () => {
+
+    // Configuration
+    const PARTICLE_COUNT = 800; // Balanced density
+    const CONNECTION_DIST = 100;
+    const MOUSE_RADIUS = 200;
+    const DEPTH = 1000; // Z-depth of the field
+
+    const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
     };
+    window.addEventListener('resize', resize);
+    resize();
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    handleResize();
-
-    // Advanced Particle Class
-    class Particle {
+    // State
+    const mouse = { x: -1000, y: -1000 };
+    
+    // 3D Particle Class
+    class Node {
       x: number;
       y: number;
-      size: number;
+      z: number;
+      vx: number;
+      vy: number;
+      vz: number;
       baseX: number;
       baseY: number;
-      density: number;
-      speedX: number;
-      speedY: number;
-      colorType: 'purple' | 'white' | 'blue';
-      opacity: number;
-      depth: number; // 1 = front, 0.5 = mid, 0.2 = far
+      size: number;
+      color: string;
 
       constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
+        // Random 3D Position
+        this.x = Math.random() * width - width / 2;
+        this.y = Math.random() * height - height / 2;
+        this.z = Math.random() * DEPTH;
+        
+        // Base position for "memory" spring effect
         this.baseX = this.x;
         this.baseY = this.y;
-        this.depth = Math.random() * 0.8 + 0.2; // Random depth
-        this.size = (Math.random() * 2 + 0.5) * this.depth;
-        this.speedX = (Math.random() * 0.2 - 0.1) * this.depth;
-        this.speedY = (Math.random() * 0.2 - 0.1) * this.depth;
-        this.density = (Math.random() * 20) + 1;
+
+        // Velocity (drift)
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+        this.vz = (Math.random() - 0.5) * 0.2;
+
+        this.size = Math.random() * 1.5;
         
-        const rand = Math.random();
-        if (rand > 0.7) this.colorType = 'purple';
-        else if (rand > 0.9) this.colorType = 'blue';
-        else this.colorType = 'white';
-        
-        this.opacity = (Math.random() * 0.5 + 0.1) * this.depth;
+        // Palette: White, Indigo, Violet
+        const tint = Math.random();
+        if (tint > 0.9) this.color = '255, 255, 255'; // White highlights
+        else if (tint > 0.6) this.color = '139, 92, 246'; // Violet
+        else this.color = '99, 102, 241'; // Indigo
       }
 
       update() {
-        // Mouse Interaction (Repulsion)
-        const dx = mouseRef.current.x - this.x;
-        const dy = mouseRef.current.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const forceDistance = 150;
-        const force = (forceDistance - distance) / forceDistance;
-        const directionX = dx / distance;
-        const directionY = dy / distance;
+        // 1. Basic Drift
+        this.x += this.vx;
+        this.y += this.vy;
+        this.z += this.vz;
 
-        if (distance < forceDistance) {
-          this.x -= directionX * force * this.density * 0.5;
-          this.y -= directionY * force * this.density * 0.5;
+        // 2. Mouse Interaction (Raycast approximation)
+        // Project particle to 2D to check mouse distance
+        const fov = 600;
+        const scale = fov / (fov + this.z);
+        const screenX = width / 2 + this.x * scale;
+        const screenY = height / 2 + this.y * scale;
+
+        const dx = mouse.x - screenX;
+        const dy = mouse.y - screenY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Repulsion / Excitation
+        if (dist < MOUSE_RADIUS) {
+            const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+            const angle = Math.atan2(dy, dx);
+            
+            // Push away gently (Magnetic repulsion)
+            const push = force * 4;
+            this.x -= Math.cos(angle) * push;
+            this.y -= Math.sin(angle) * push;
         } else {
-          // Return to base movement
-          if (this.x !== this.baseX) {
-             const dx = this.x - this.baseX;
-             this.x -= dx/50;
-          }
-          if (this.y !== this.baseY) {
-             const dy = this.y - this.baseY;
-             this.y -= dy/50;
-          }
+            // Spring back to drift path (Memory)
+            // We don't spring back to exact pixels, but dampen velocity to stabilize
         }
 
-        // Natural movement
-        this.x += this.speedX;
-        this.y += this.speedY;
+        // 3. Bounds Check (Respawn in void)
+        if (this.z < -fov + 100) this.z = DEPTH; // Came too close
+        if (this.z > DEPTH) this.z = -fov + 100;
         
-        // Update base for drifting
-        this.baseX += this.speedX;
-        this.baseY += this.speedY;
-
-        // Wrap around screen
-        if (this.x < -20) { this.x = width + 20; this.baseX = width + 20; }
-        if (this.x > width + 20) { this.x = -20; this.baseX = -20; }
-        if (this.y < -20) { this.y = height + 20; this.baseY = height + 20; }
-        if (this.y > height + 20) { this.y = -20; this.baseY = -20; }
+        // Wrap X/Y based on perspective bounds (approx)
+        const bound = width * 1.5;
+        if (this.x > bound) this.x = -bound;
+        if (this.x < -bound) this.x = bound;
+        if (this.y > bound) this.y = -bound;
+        if (this.y < -bound) this.y = bound;
       }
 
-      draw() {
+      draw(nodes: Node[]) {
         if (!ctx) return;
+        
+        const fov = 600;
+        const scale = fov / (fov + this.z);
+        
+        // 3D -> 2D Projection
+        const screenX = width / 2 + this.x * scale;
+        const screenY = height / 2 + this.y * scale;
+
+        if (screenX < 0 || screenX > width || screenY < 0 || screenY > height) return;
+
+        const alpha = Math.max(0.1, (1 - this.z / DEPTH)); // Fade distant nodes
+
+        // Draw Node
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        
-        if (this.colorType === 'purple') {
-            ctx.fillStyle = `rgba(139, 92, 246, ${this.opacity})`;
-        } else if (this.colorType === 'blue') {
-            ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
-        } else {
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        }
-        
+        ctx.arc(screenX, screenY, this.size * scale, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.color}, ${alpha})`;
         ctx.fill();
+
+        // Draw Connections (Synapses) - Only if near mouse to simulate "Activity"
+        // Optimization: Only check connections if particle is activated by mouse
+        const dxMouse = mouse.x - screenX;
+        const dyMouse = mouse.y - screenY;
+        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+        if (distMouse < MOUSE_RADIUS) {
+            // Connect to Mouse
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${this.color}, ${alpha * 0.4})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(screenX, screenY);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+
+            // Connect to Neighbors (Simple spatial check - O(N^2) reduced by dist check)
+            // Note: In production, a spatial hash grid is better, but for 800 particles, 
+            // checking only "active" ones against a subset is fine.
+        }
       }
     }
 
-    // Create Particles
-    const particleCount = Math.floor((width * height) / 12000); 
-    const particles: Particle[] = [];
+    const nodes: Node[] = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) nodes.push(new Node());
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    let animationFrameId: number;
+    let animationFrame: number;
 
     const animate = () => {
       if (!ctx) return;
-      ctx.clearRect(0, 0, width, height);
-      
-      // Draw Particles & Connections
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-        
-        // Constellations (Draw lines between close particles)
-        // Only connect if same color family or if very close
-        // Optimization: Only check particles j > i to avoid double check
-        for (let j = i; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          
-          // Connect limit
-          if (distance < 100) {
-             ctx.beginPath();
-             const opacity = (1 - distance / 100) * 0.15 * particles[i].depth;
-             ctx.strokeStyle = `rgba(139, 92, 246, ${opacity})`;
-             ctx.lineWidth = 0.5 * particles[i].depth;
-             ctx.moveTo(particles[i].x, particles[i].y);
-             ctx.lineTo(particles[j].x, particles[j].y);
-             ctx.stroke();
-          }
-        }
-      }
-      
-      animationFrameId = requestAnimationFrame(animate);
+
+      // Clear with very slight trail for "screen burn" feel
+      ctx.fillStyle = 'rgba(5, 5, 7, 0.3)'; 
+      ctx.fillRect(0, 0, width, height);
+
+      // Add subtle Vignette to canvas
+      // We do this by gradients or just keeping edges dark naturally via particle alpha
+
+      nodes.forEach(node => {
+        node.update();
+        node.draw(nodes);
+      });
+
+      animationFrame = requestAnimationFrame(animate);
     };
 
+    const onMouseMove = (e: MouseEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
     animate();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {/* Static Grid Overlay */}
-      <div 
-        className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]"
-      />
-      
-      {/* Volumetric Fog Glows */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-violet-950/20 blur-[120px] rounded-full mix-blend-screen animate-pulse-slow" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[800px] h-[600px] bg-indigo-950/10 blur-[100px] rounded-full mix-blend-screen animate-pulse-slow" style={{ animationDelay: '2s' }} />
-
-      {/* Main Canvas Layer */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      
-      {/* Vignette & Grain */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/40 pointer-events-none" />
-    </div>
+    <>
+        <canvas 
+            ref={canvasRef} 
+            className="fixed inset-0 z-0 pointer-events-none bg-[#050507]"
+        />
+        {/* Film Grain Overlay for texture */}
+        <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+    </>
   );
 };
