@@ -1,14 +1,15 @@
 
 import React, { useState } from 'react';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, Network } from 'lucide-react';
 
 interface NavbarProps {
   scrolled: boolean;
   onOpenLogin: () => void;
+  onOpenApi: () => void;
   onScrollTo: (id: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onScrollTo }) => {
+export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onOpenApi, onScrollTo }) => {
   const [isHoveringDash, setIsHoveringDash] = useState(false);
 
   return (
@@ -69,25 +70,40 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onScrollT
 
         </div>
 
-        {/* Dashboard Button with Decrypt Effect */}
-        <button 
-            onClick={onOpenLogin}
-            onMouseEnter={() => setIsHoveringDash(true)}
-            onMouseLeave={() => setIsHoveringDash(false)}
-            className="ml-auto md:ml-0 group relative px-4 py-1.5 rounded bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all duration-300 active:scale-95 overflow-hidden z-40"
-        >
-            <span className="relative z-10 flex items-center gap-2 text-[10px] font-mono tracking-wider text-white/70 group-hover:text-violet-200 transition-colors">
-                <LayoutDashboard 
-                  className={`w-3 h-3 transition-all duration-300 ${isHoveringDash ? 'text-violet-400 scale-110' : 'text-white/70'}`} 
-                />
-                {isHoveringDash ? (
-                    <span className="animate-pulse">ACCESS_DB</span>
-                ) : (
-                    "DASHBOARD"
-                )}
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/10 to-transparent -translate-x-[100%] group-hover:animate-[shimmer_1s_infinite]" />
-        </button>
+        {/* Right Side Buttons */}
+        <div className="ml-auto md:ml-0 flex items-center gap-3 z-40">
+            {/* API Access Button */}
+            <button 
+                onClick={onOpenApi}
+                className="group relative px-4 py-1.5 rounded bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all duration-300 active:scale-95 overflow-hidden"
+            >
+                <span className="relative z-10 flex items-center gap-2 text-[10px] font-mono tracking-wider text-white/70 group-hover:text-violet-200 transition-colors">
+                    <Network className="w-3 h-3 group-hover:text-violet-400" />
+                    API ACCESS
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/10 to-transparent -translate-x-[100%] group-hover:animate-[shimmer_1s_infinite]" />
+            </button>
+
+            {/* Dashboard Button with Decrypt Effect */}
+            <button 
+                onClick={onOpenLogin}
+                onMouseEnter={() => setIsHoveringDash(true)}
+                onMouseLeave={() => setIsHoveringDash(false)}
+                className="group relative px-4 py-1.5 rounded bg-white/5 border border-white/10 hover:bg-white/10 hover:border-violet-500/50 transition-all duration-300 active:scale-95 overflow-hidden"
+            >
+                <span className="relative z-10 flex items-center gap-2 text-[10px] font-mono tracking-wider text-white/70 group-hover:text-violet-200 transition-colors">
+                    <LayoutDashboard 
+                    className={`w-3 h-3 transition-all duration-300 ${isHoveringDash ? 'text-violet-400 scale-110' : 'text-white/70'}`} 
+                    />
+                    {isHoveringDash ? (
+                        <span className="animate-pulse">ACCESS_DB</span>
+                    ) : (
+                        "DASHBOARD"
+                    )}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-500/10 to-transparent -translate-x-[100%] group-hover:animate-[shimmer_1s_infinite]" />
+            </button>
+        </div>
 
       </div>
     </header>

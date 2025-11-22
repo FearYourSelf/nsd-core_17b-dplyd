@@ -6,7 +6,7 @@ import { Terminal, Box } from 'lucide-react';
 // Pure CSS 3D animated structure
 const Tesseract: React.FC = () => {
   return (
-    <div className="scene-3d w-[600px] h-[600px] md:w-[800px] md:h-[800px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none z-0">
+    <div className="scene-3d w-[600px] h-[600px] md:w-[800px] md:h-[800px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none z-0">
       <div className="tesseract-wrapper w-full h-full relative">
         {/* Outer Cube */}
         <div className="cube-spinner w-full h-full absolute top-0 left-0 transform-style-3d">
@@ -46,6 +46,64 @@ const Tesseract: React.FC = () => {
       </div>
     </div>
   );
+};
+
+const BlackHoleParticles: React.FC = () => {
+    const [particles, setParticles] = useState<{id: number, angle: number, distance: number, delay: number, duration: number, size: number, color: string}[]>([]);
+
+    useEffect(() => {
+        // Generate particles on client side to avoid hydration mismatch
+        const newParticles = Array.from({ length: 60 }).map((_, i) => ({
+            id: i,
+            angle: Math.random() * 360,
+            distance: 350 + Math.random() * 200, // Distance from center in px
+            delay: Math.random() * -5,
+            // Increased duration to 8-16 seconds for slower movement
+            duration: 8 + Math.random() * 8,
+            size: 1 + Math.random() * 3,
+            color: Math.random() > 0.6 ? '#8b5cf6' : '#ffffff' // Violet or White
+        }));
+        setParticles(newParticles);
+    }, []);
+
+    return (
+        <>
+            <style>{`
+                @keyframes bh-implode {
+                    0% {
+                        transform: rotate(var(--angle)) translateX(var(--distance)) scale(0);
+                        opacity: 0;
+                    }
+                    10% {
+                        opacity: 1;
+                        transform: rotate(var(--angle)) translateX(var(--distance)) scale(1);
+                    }
+                    100% {
+                        transform: rotate(calc(var(--angle) + 180deg)) translateX(0) scale(0);
+                        opacity: 0;
+                    }
+                }
+            `}</style>
+            <div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center overflow-visible">
+                {particles.map(p => (
+                    <div
+                        key={p.id}
+                        className="absolute rounded-full mix-blend-screen blur-[0.5px]"
+                        style={{
+                            width: `${p.size}px`,
+                            height: `${p.size}px`,
+                            backgroundColor: p.color,
+                            boxShadow: `0 0 ${p.size * 2}px ${p.color}`,
+                            '--angle': `${p.angle}deg`,
+                            '--distance': `${p.distance}px`,
+                            animation: `bh-implode ${p.duration}s ease-in infinite`,
+                            animationDelay: `${p.delay}s`,
+                        } as React.CSSProperties}
+                    />
+                ))}
+            </div>
+        </>
+    );
 };
 
 const MANIFEST_TEXT = `NSD-CORE/17B is a 17-billion-parameter multimodal expert-gated architecture designed for high-bandwidth reasoning and unified cross-media understanding. It integrates text, vision, audio, and video processing through an early-fusion pipeline that enables coherent interpretation across modalities.
@@ -263,6 +321,9 @@ export const Hero: React.FC = () => {
             >
                 <source src="https://pub-a1b327e0f0794695b6f7d05baa938672.r2.dev/q-c3d7becf.webm" type="video/webm" />
             </video>
+
+            {/* Inward Spiraling Particles */}
+            <BlackHoleParticles />
         </div>
       </div>
 

@@ -67,6 +67,38 @@ const TiltCard = ({ children, className = "" }: { children?: React.ReactNode, cl
   );
 };
 
+const Typewriter = ({ words, className = "" }: { words: string[], className?: string }) => {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      const timeout = setTimeout(() => setReverse(true), 2000);
+      return () => clearTimeout(timeout);
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, reverse ? 50 : 100);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className={`${className} inline-block min-w-[1ch]`}>
+      {words[index].substring(0, subIndex)}
+      <span className="animate-pulse border-r-2 border-current ml-0.5 h-[0.8em] inline-block align-baseline"></span>
+    </span>
+  );
+};
+
 const FluxParticles: React.FC = () => {
     return (
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -243,12 +275,22 @@ const SynthesisVisualNode = ({
     subLabel?: string,
     className?: string, 
     delay?: number,
-    color?: "violet" | "amber" | "blue"
+    color?: "violet" | "amber" | "blue" | "emerald" | "rose"
 }) => {
     const colorClasses = {
         violet: "border-violet-500/30 bg-violet-500/10 text-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.15)]",
         amber: "border-amber-500/30 bg-amber-500/10 text-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.15)]",
-        blue: "border-blue-500/30 bg-blue-500/10 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
+        blue: "border-blue-500/30 bg-blue-500/10 text-blue-300 shadow-[0_0_15px_rgba(59,130,246,0.15)]",
+        emerald: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.15)]",
+        rose: "border-rose-500/30 bg-rose-500/10 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.15)]"
+    };
+
+    const iconColorClass = {
+        violet: 'text-violet-400',
+        amber: 'text-amber-400',
+        blue: 'text-blue-400',
+        emerald: 'text-emerald-400',
+        rose: 'text-rose-400'
     };
 
     return (
@@ -256,7 +298,7 @@ const SynthesisVisualNode = ({
             className={`absolute flex items-center gap-3 p-3 rounded-xl border backdrop-blur-md animate-float z-30 transition-all duration-300 hover:scale-105 hover:border-opacity-50 hover:bg-opacity-20 cursor-default ${colorClasses[color]} ${className}`}
             style={{ animationDelay: `${delay}s` }}
         >
-            <div className={`p-2 rounded-lg bg-white/5 ${color === 'amber' ? 'text-amber-400' : 'text-violet-400'}`}>
+            <div className={`p-2 rounded-lg bg-white/5 ${iconColorClass[color]}`}>
                 {icon}
             </div>
             <div className="flex flex-col">
@@ -269,7 +311,7 @@ const SynthesisVisualNode = ({
 
 export const ProjectShowcase: React.FC = () => {
   return (
-    <div className="w-full max-w-7xl mx-auto px-6 pb-40 space-y-40">
+    <div className="w-full max-w-7xl mx-auto px-6 pb-24 space-y-24">
       
       {/* Project 1: F&Q // SYNTHESIS CORE */}
       <section id="project-synthesis" className="relative group scroll-mt-32">
@@ -277,10 +319,10 @@ export const ProjectShowcase: React.FC = () => {
         <TiltCard className="rounded-3xl">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-amber-500/10 to-fuchsia-600/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700 -z-10"></div>
             
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center p-6 lg:p-8 rounded-3xl border border-white/10 bg-[#050507]/80 backdrop-blur-xl z-10">
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center p-6 rounded-3xl border border-white/10 bg-[#050507]/80 backdrop-blur-xl z-10">
                 
                 {/* Left Column: Text Content */}
-                <div className="order-2 lg:order-1 flex flex-col justify-center space-y-8 relative">
+                <div className="order-2 lg:order-1 flex flex-col justify-center space-y-6 relative">
                     {/* Background sheen */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -344,37 +386,11 @@ export const ProjectShowcase: React.FC = () => {
                         </div>
                         
                         <SynthesisTelemetry />
-
-                        {/* Code Snippet - Terminal Style */}
-                        <div className="relative rounded-lg overflow-hidden border border-white/10 bg-[#0a0a0c] shadow-2xl group/code">
-                            <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
-                                <div className="flex gap-1.5">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 group-hover/code:bg-red-500 transition-colors" />
-                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 group-hover/code:bg-yellow-500 transition-colors" />
-                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 group-hover/code:bg-green-500 transition-colors" />
-                                </div>
-                                <span className="text-[10px] font-mono text-white/30">init_core.ts</span>
-                            </div>
-                            <div className="p-4 font-mono text-xs overflow-x-auto">
-                                <div className="flex">
-                                    <span className="text-white/20 select-none mr-4">1</span>
-                                    <span>
-                                        <span className="text-fuchsia-400">const</span> <span className="text-violet-200">synthesis</span> <span className="text-fuchsia-400">=</span> <span className="text-amber-300">new</span> <span className="text-blue-300">NarrativeCore</span>(<span className="text-green-400">'F&Q'</span>);
-                                    </span>
-                                </div>
-                                <div className="flex">
-                                    <span className="text-white/20 select-none mr-4">2</span>
-                                    <span>
-                                        <span className="text-fuchsia-400">await</span> <span className="text-violet-200">synthesis</span>.<span className="text-blue-300">refine</span>(<span className="text-violet-200">character_model</span>);
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 {/* Right Column: Visual Interactive Side */}
-                <div className="order-1 lg:order-2 relative h-[450px] lg:h-[500px] w-full bg-[#0a0a0c] rounded-2xl overflow-hidden flex items-center justify-center border border-white/5 group/vis shadow-2xl">
+                <div className="order-1 lg:order-2 relative h-[320px] lg:h-[400px] w-full bg-[#0a0a0c] rounded-2xl overflow-hidden flex items-center justify-center border border-white/5 group/vis shadow-2xl">
                     
                     {/* Background Effects */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(109,40,217,0.1),transparent_70%)]" />
@@ -395,78 +411,130 @@ export const ProjectShowcase: React.FC = () => {
                             </filter>
                         </defs>
                         
+                        {/* --- LEFT SIDE INPUTS -> CENTER --- */}
+
                         {/* Logic Gate (Top Left) to Center */}
                         <path 
-                            d="M 28% 28% Q 35% 35% 50% 50%" 
+                            d="M 20% 25% Q 35% 35% 50% 50%" 
                             stroke="url(#flowGradient)" 
                             strokeWidth="1.5" 
                             fill="none" 
-                            className="opacity-60" 
+                            className="opacity-40" 
                             filter="url(#glowLine)"
                         />
-                        {/* Animated flow dot for Logic */}
                         <circle r="2" fill="#60a5fa" filter="url(#glowLine)">
                             <animateMotion 
                                 dur="3s" 
                                 repeatCount="indefinite" 
-                                path="M 28% 28% Q 35% 35% 50% 50%" 
+                                path="M 20% 25% Q 35% 35% 50% 50%" 
                             />
                         </circle>
 
                         {/* Raw Input (Bottom Left) to Center */}
                         <path 
-                            d="M 28% 72% Q 35% 65% 50% 50%" 
+                            d="M 20% 75% Q 35% 65% 50% 50%" 
                             stroke="url(#flowGradient)" 
                             strokeWidth="1.5" 
                             fill="none" 
-                            className="opacity-60"
+                            className="opacity-40"
                             filter="url(#glowLine)"
                         />
-                        {/* Animated flow dot for Input */}
                         <circle r="2" fill="#a78bfa" filter="url(#glowLine)">
                             <animateMotion 
                                 dur="2.5s" 
                                 repeatCount="indefinite" 
-                                path="M 28% 72% Q 35% 65% 50% 50%" 
+                                path="M 20% 75% Q 35% 65% 50% 50%" 
                             />
                         </circle>
 
-                        {/* Center to Synthesis (Right) */}
+                        {/* Tokenizer (Mid Left) to Center */}
                         <path 
-                            d="M 50% 50% Q 65% 50% 72% 50%" 
+                            d="M 15% 50% Q 32% 50% 50% 50%" 
+                            stroke="url(#flowGradient)" 
+                            strokeWidth="1.5" 
+                            fill="none" 
+                            className="opacity-40"
+                            filter="url(#glowLine)"
+                        />
+                        <circle r="2" fill="#c084fc" filter="url(#glowLine)">
+                            <animateMotion 
+                                dur="2s" 
+                                repeatCount="indefinite" 
+                                path="M 15% 50% Q 32% 50% 50% 50%" 
+                            />
+                        </circle>
+
+                        {/* --- CENTER -> RIGHT SIDE OUTPUTS --- */}
+
+                        {/* Center to Vector DB (Top Right) */}
+                        <path 
+                            d="M 50% 50% Q 65% 35% 80% 25%" 
+                            stroke="url(#flowGradient)" 
+                            strokeWidth="1.5" 
+                            fill="none" 
+                            className="opacity-40"
+                            filter="url(#glowLine)"
+                        />
+                        <circle r="2" fill="#34d399" filter="url(#glowLine)">
+                            <animateMotion 
+                                dur="3.5s" 
+                                repeatCount="indefinite" 
+                                path="M 50% 50% Q 65% 35% 80% 25%" 
+                            />
+                        </circle>
+
+                        {/* Center to Persona (Bottom Right) */}
+                        <path 
+                            d="M 50% 50% Q 65% 65% 80% 75%" 
+                            stroke="url(#flowGradient)" 
+                            strokeWidth="1.5" 
+                            fill="none" 
+                            className="opacity-40"
+                            filter="url(#glowLine)"
+                        />
+                        <circle r="2" fill="#f472b6" filter="url(#glowLine)">
+                            <animateMotion 
+                                dur="4s" 
+                                repeatCount="indefinite" 
+                                path="M 50% 50% Q 65% 65% 80% 75%" 
+                            />
+                        </circle>
+
+                        {/* Center to Synthesis (Mid Right) */}
+                        <path 
+                            d="M 50% 50% Q 65% 50% 80% 50%" 
                             stroke="url(#flowGradient)" 
                             strokeWidth="1.5" 
                             fill="none" 
                             className="opacity-60"
                             filter="url(#glowLine)"
                         />
-                        {/* Animated flow dot for Output */}
                         <circle r="2" fill="#fbbf24" filter="url(#glowLine)">
-                             <animateMotion 
-                                dur="2s" 
+                            <animateMotion 
+                                dur="1.5s" 
                                 repeatCount="indefinite" 
-                                path="M 50% 50% Q 65% 50% 72% 50%" 
+                                path="M 50% 50% Q 65% 50% 80% 50%" 
                             />
                         </circle>
                     </svg>
 
                     {/* Central Core Element - The "Ink Pen" */}
-                    <div className="relative z-20">
+                    <div className="relative z-20 scale-[0.85] lg:scale-100">
                         {/* Orbital Rings - Tighter for new layout */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] border border-white/5 rounded-full animate-[spin_20s_linear_infinite]" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] border border-violet-500/10 rounded-full animate-[spin_15s_linear_infinite_reverse] border-t-violet-500/40" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] border border-white/5 rounded-full animate-[spin_20s_linear_infinite]" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130px] h-[130px] border border-violet-500/10 rounded-full animate-[spin_15s_linear_infinite_reverse] border-t-violet-500/40" />
                         
                         {/* Inner Core */}
-                        <div className="relative w-28 h-28 flex items-center justify-center">
+                        <div className="relative w-24 h-24 flex items-center justify-center">
                             <div className="absolute inset-0 bg-amber-500/10 rounded-3xl rotate-45 blur-2xl animate-pulse-slow" />
                             
-                            <div className="relative w-20 h-20 bg-gradient-to-br from-[#1a1a1c] to-[#050507] rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl z-20 overflow-hidden group-hover/vis:scale-105 transition-transform duration-500">
+                            <div className="relative w-16 h-16 bg-gradient-to-br from-[#1a1a1c] to-[#050507] rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl z-20 overflow-hidden group-hover/vis:scale-105 transition-transform duration-500">
                                 {/* The Gradient Background for the Logo */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/20 via-transparent to-violet-500/20 opacity-80" />
                                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
                                 
                                 {/* Icon */}
-                                <PenTool className="w-8 h-8 text-white relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" />
+                                <PenTool className="w-6 h-6 text-white relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]" />
                                 
                                 {/* Inner glow ring */}
                                 <div className="absolute inset-0 border border-white/10 rounded-2xl" />
@@ -482,27 +550,52 @@ export const ProjectShowcase: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Floating Nodes - Tighter positioning to connect with lines */}
+                    {/* Floating Nodes - Expanded Set */}
                     <SynthesisVisualNode 
-                        label="RAW INPUT" 
-                        subLabel="JSON/TXT"
-                        icon={<FileJson className="w-4 h-4" />} 
-                        className="bottom-[20%] left-[12%]" // Closer to center
-                        delay={0}
-                    />
-                     <SynthesisVisualNode 
                         label="LOGIC GATE" 
                         subLabel="Parsing"
-                        icon={<Cpu className="w-4 h-4" />} 
-                        className="top-[20%] left-[12%]" // Closer to center
+                        icon={<Cpu className="w-3.5 h-3.5" />} 
+                        className="top-[15%] left-[8%]" 
                         delay={1}
                         color="blue"
                     />
                     <SynthesisVisualNode 
+                        label="RAW INPUT" 
+                        subLabel="JSON/TXT"
+                        icon={<FileJson className="w-3.5 h-3.5" />} 
+                        className="bottom-[15%] left-[8%]" 
+                        delay={0}
+                    />
+                    <SynthesisVisualNode 
+                        label="TOKENIZER" 
+                        subLabel="Vector"
+                        icon={<Code2 className="w-3.5 h-3.5" />} 
+                        className="top-1/2 left-[2%] -translate-y-1/2" 
+                        delay={0.5}
+                        color="violet"
+                    />
+
+                    <SynthesisVisualNode 
+                        label="VECTOR DB" 
+                        subLabel="Context"
+                        icon={<Database className="w-3.5 h-3.5" />} 
+                        className="top-[15%] right-[8%]" 
+                        delay={1.5}
+                        color="emerald"
+                    />
+                    <SynthesisVisualNode 
+                        label="PERSONA" 
+                        subLabel="Active"
+                        icon={<Users className="w-3.5 h-3.5" />} 
+                        className="bottom-[15%] right-[8%]" 
+                        delay={2}
+                        color="rose"
+                    />
+                    <SynthesisVisualNode 
                         label="SYNTHESIS" 
                         subLabel="Ready"
-                        icon={<Sparkles className="w-4 h-4" />} 
-                        className="top-1/2 right-[10%] -translate-y-1/2" 
+                        icon={<Sparkles className="w-3.5 h-3.5" />} 
+                        className="top-1/2 right-[2%] -translate-y-1/2" 
                         delay={2}
                         color="amber"
                     />
@@ -579,8 +672,24 @@ export const ProjectShowcase: React.FC = () => {
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                        <FeatureItem icon={<Layers />} title="SDXL Integration" desc="High-res latent diffusion" />
-                        <FeatureItem icon={<Aperture />} title="Adaptive Flux" desc="Dynamic visual weighting" />
+                        <FeatureItem 
+                            icon={<Layers />} 
+                            title={
+                                <span>
+                                    <Typewriter words={["SDXL", "FLUX.1"]} className="text-indigo-300" /> Integration
+                                </span>
+                            } 
+                            desc="High-res latent diffusion" 
+                        />
+                        <FeatureItem 
+                            icon={<Aperture />} 
+                            title={
+                                <span>
+                                    Adaptive <Typewriter words={["Flux", "Latent", "Neural", "Spatial", "Semantic", "Dynamic", "Context", "Visual", "Hyper", "Refined"]} className="text-indigo-300" />
+                                </span>
+                            } 
+                            desc="Dynamic visual weighting" 
+                        />
                     </div>
                     
                     <div className="pt-6 flex flex-col gap-4">
@@ -610,7 +719,7 @@ export const ProjectShowcase: React.FC = () => {
   );
 };
 
-const FeatureItem = ({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) => (
+const FeatureItem = ({ icon, title, desc }: { icon: React.ReactNode, title: React.ReactNode, desc: string }) => (
     <div className="group/item flex gap-3 items-start p-4 rounded-xl hover:bg-white/5 transition-all duration-300 hover:translate-x-1 border border-transparent hover:border-white/5">
         <div className="mt-1 text-white/80 p-1.5 bg-white/5 rounded-lg group-hover/item:text-violet-300 group-hover/item:scale-110 transition-all duration-300 group-hover/item:shadow-[0_0_10px_rgba(139,92,246,0.3)]">{icon}</div>
         <div>

@@ -5,10 +5,12 @@ import { Hero } from './components/Hero';
 import { ProjectShowcase } from './components/ProjectShowcase';
 import { BackgroundEffects } from './components/BackgroundEffects';
 import { LoginModal } from './components/LoginModal';
+import { ApiModal } from './components/ApiModal';
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isApiOpen, setIsApiOpen] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
 
   // Refs for Scroll Logic
@@ -192,6 +194,7 @@ export default function App() {
       <Navbar 
         scrolled={scrolled} 
         onOpenLogin={() => setIsLoginOpen(true)} 
+        onOpenApi={() => setIsApiOpen(true)}
         onScrollTo={handleScrollTo}
       />
       
@@ -200,8 +203,9 @@ export default function App() {
         <ProjectShowcase />
       </main>
 
-      {/* Login Modal Layer */}
+      {/* Modal Layers */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <ApiModal isOpen={isApiOpen} onClose={() => setIsApiOpen(false)} />
     </div>
   );
 }
