@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NSD-CORE/17B</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              'nsd-dark': '#050507',
+              'nsd-purple': '#6d28d9',
+              'nsd-glow': '#8b5cf6',
+            },
+            animation: {
+              'spin-slow': 'spin 20s linear infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'pulse-glow': 'pulse-glow 4s ease-in-out infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'scroll-text': 'scroll-text 40s linear infinite',
+              'subtle-breathe': 'subtle-breathe 8s ease-in-out infinite',
+              'pulse-glow-text': 'pulse-glow-text 2s ease-in-out infinite',
+              'online-pulse': 'online-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'word-jitter': 'word-jitter 4s ease-in-out infinite',
+              'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+              'scan': 'scan 3s linear infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              'pulse-glow': {
+                '0%, 100%': { opacity: 0.8, transform: 'scale(1)' },
+                '50%': { opacity: 1, transform: 'scale(1.02)' },
+              },
+              'scroll-text': {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(-50%)' },
+              },
+              'subtle-breathe': {
+                '0%, 100%': { opacity: 0.7, transform: 'scale(1)' },
+                '50%': { opacity: 1, transform: 'scale(1.01)' },
+              },
+              'pulse-glow-text': {
+                '0%, 100%': { textShadow: '0 0 15px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2)' },
+                '50%': { textShadow: '0 0 30px rgba(139, 92, 246, 0.9), 0 0 50px rgba(139, 92, 246, 0.6)' },
+              },
+              'online-pulse': {
+                '0%, 100%': { opacity: 1, transform: 'scale(1)' },
+                '50%': { opacity: 0.5, transform: 'scale(0.8)' },
+              },
+              'word-jitter': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '25%': { transform: 'translateY(-1px)' },
+                '75%': { transform: 'translateY(1px)' },
+              },
+              'shake': {
+                '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+              },
+              'scan': {
+                '0%': { top: '0%', opacity: 0 },
+                '10%': { opacity: 1 },
+                '90%': { opacity: 1 },
+                '100%': { top: '100%', opacity: 0 },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050507;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .purple-glow-text {
+        text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+      }
+      .scanline {
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.2) 50%,
+          rgba(0,0,0,0.2)
+        );
+        background-size: 100% 4px;
+      }
+      /* Global scrollbar hide */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
