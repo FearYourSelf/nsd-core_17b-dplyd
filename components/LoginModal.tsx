@@ -131,7 +131,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
           {/* Footer / Status */}
           <div className="mt-8 border-t border-white/5 pt-4 flex justify-between items-center">
-            <span className="text-[10px] font-mono text-white/30">NSD-CORE V17B</span>
+            <span className="text-[10px] font-mono text-white/30">NSD-CORE V70B</span>
             <div className="flex items-center gap-1.5">
                 <div className={`w-1.5 h-1.5 rounded-full ${error ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`} />
                 <span className={`text-[10px] font-mono ${error ? 'text-red-400' : 'text-green-500/70'}`}>

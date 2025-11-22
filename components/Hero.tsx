@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { Terminal, Box } from 'lucide-react';
 
@@ -106,15 +105,15 @@ const BlackHoleParticles: React.FC = () => {
     );
 };
 
-const MANIFEST_TEXT = `NSD-CORE/17B is a 17-billion-parameter multimodal expert-gated architecture designed for high-bandwidth reasoning and unified cross-media understanding. It integrates text, vision, audio, and video processing through an early-fusion pipeline that enables coherent interpretation across modalities.
+const MANIFEST_TEXT = `NSD-CORE/70B is a 70-billion-parameter multimodal expert-gated architecture designed for high-bandwidth reasoning and unified cross-media understanding. It integrates text, vision, audio, and video processing through an early-fusion pipeline that enables coherent interpretation across modalities.
 
 The system supports real-time web search, image generation, code execution, computer-use automation, file navigation, and modular MCP-based tool orchestration. Its dense-sparse hybrid layout ensures that only the relevant expert pathways activate per task, delivering high efficiency, low latency, and consistent output stability even under complex workloads.
 
-NSD-CORE/17B is engineered as a compact but high-performance general reasoning engine: resource-efficient, highly adaptive, and capable of maintaining structural, narrative, and analytical coherence across extended sessions. A deliberately understated core with the reliability and punch of far larger systems.`;
+NSD-CORE/70B is engineered as a compact but high-performance general reasoning engine: resource-efficient, highly adaptive, and capable of maintaining structural, narrative, and analytical coherence across extended sessions. A deliberately understated core with the reliability and punch of far larger systems.`;
 
 const HIGHLIGHT_PHRASES = [
-  "NSD-CORE/17B",
-  "17-billion-parameter", 
+  "NSD-CORE/70B",
+  "70-billion-parameter", 
   "multimodal expert-gated architecture", 
   "high-bandwidth reasoning", 
   "unified cross-media understanding", 
@@ -335,35 +334,35 @@ export const Hero: React.FC = () => {
       
       {/* Header Content - Z-30 (Highest) */}
       <div 
-        className="relative z-30 flex flex-col items-center pointer-events-none transition-opacity duration-300 will-change-opacity mt-12"
-        style={{ opacity: scrollOpacity, marginBottom: '450px' }} // Significantly increased spacing to push manifest down
+        className="relative z-30 flex flex-col items-center pointer-events-none transition-opacity duration-300 will-change-opacity mt-12 mb-[380px] md:mb-[450px]"
+        style={{ opacity: scrollOpacity }} 
       >
         <div className="mb-8 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono tracking-wide text-violet-300 shadow-[0_0_20px_rgba(139,92,246,0.3)] backdrop-blur-md hover:bg-white/10 transition-colors group cursor-help">
                <Box className="w-3 h-3 animate-spin-slow group-hover:text-white transition-colors" />
                <span className="relative">
-                 SYSTEM VERSION 17B LIVE
+                 SYSTEM VERSION 70B LIVE
                  <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-violet-400 rounded-full animate-ping" />
                </span>
             </div>
         </div>
 
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white drop-shadow-2xl relative select-none">
-          <span className="relative z-10 flex flex-col md:block drop-shadow-[0_5px_30px_rgba(0,0,0,0.8)]">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white drop-shadow-2xl relative select-none">
+          <span className="relative z-10 block whitespace-nowrap drop-shadow-[0_5px_30px_rgba(0,0,0,0.8)]">
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-violet-100 to-violet-400 purple-glow-text animate-pulse-glow">
               NSD-CORE
             </span>
             <span className="text-violet-500 drop-shadow-[0_0_15px_rgba(139,92,246,0.6)] relative inline-block ml-3 md:ml-4">
-              /17B
-              <span className="absolute top-0 left-0 -ml-[1px] opacity-0 hover:opacity-70 text-cyan-400 mix-blend-screen animate-shake block">/17B</span>
-              <span className="absolute top-0 left-0 ml-[1px] opacity-0 hover:opacity-70 text-red-400 mix-blend-multiply animate-shake block" style={{animationDirection: 'reverse'}}>/17B</span>
+              /70B
+              <span className="absolute top-0 left-0 -ml-[1px] opacity-0 hover:opacity-70 text-cyan-400 mix-blend-screen animate-shake block">/70B</span>
+              <span className="absolute top-0 left-0 ml-[1px] opacity-0 hover:opacity-70 text-red-400 mix-blend-multiply animate-shake block" style={{animationDirection: 'reverse'}}>/70B</span>
             </span>
           </span>
         </h1>
       </div>
 
       {/* SYSTEM MANIFEST MODAL - Z-20 (Above Video, Below Title) */}
-      <div className="relative z-20 w-full max-w-3xl transition-transform duration-100 ease-out -mt-64" style={tiltStyle}>
+      <div className="relative z-20 w-full max-w-3xl transition-transform duration-100 ease-out -mt-10 md:-mt-64" style={tiltStyle}>
          
          <div className="glass-panel rounded-xl overflow-hidden shadow-[0_0_80px_rgba(109,40,217,0.25)] ring-1 ring-white/20 bg-[#0a0a0c]/90 backdrop-blur-2xl">
             

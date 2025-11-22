@@ -295,7 +295,7 @@ const SynthesisVisualNode = ({
 
     return (
         <div 
-            className={`absolute flex items-center gap-3 p-3 rounded-xl border backdrop-blur-md animate-float z-30 transition-all duration-300 hover:scale-105 hover:border-opacity-50 hover:bg-opacity-20 cursor-default ${colorClasses[color]} ${className}`}
+            className={`absolute flex items-center gap-3 p-3 rounded-xl border backdrop-blur-md animate-float z-30 transition-all duration-300 hover:scale-105 hover:border-opacity-50 hover:bg-opacity-20 cursor-default scale-75 md:scale-100 origin-center ${colorClasses[color]} ${className}`}
             style={{ animationDelay: `${delay}s` }}
         >
             <div className={`p-2 rounded-lg bg-white/5 ${iconColorClass[color]}`}>
@@ -319,13 +319,10 @@ export const ProjectShowcase: React.FC = () => {
         <TiltCard className="rounded-3xl">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-amber-500/10 to-fuchsia-600/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700 -z-10"></div>
             
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center p-6 rounded-3xl border border-white/10 bg-[#050507]/80 backdrop-blur-xl z-10">
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center p-5 md:p-8 rounded-3xl border border-white/10 bg-[#050507]/80 backdrop-blur-xl z-10">
                 
                 {/* Left Column: Text Content */}
                 <div className="order-2 lg:order-1 flex flex-col justify-center space-y-6 relative">
-                    {/* Background sheen */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
                     <div className="relative z-10 space-y-6">
                         <div className="flex flex-wrap items-center gap-3">
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-xs font-mono">
@@ -390,7 +387,7 @@ export const ProjectShowcase: React.FC = () => {
                 </div>
 
                 {/* Right Column: Visual Interactive Side */}
-                <div className="order-1 lg:order-2 relative h-[320px] lg:h-[400px] w-full bg-[#0a0a0c] rounded-2xl overflow-hidden flex items-center justify-center border border-white/5 group/vis shadow-2xl">
+                <div className="order-1 lg:order-2 relative h-[480px] lg:h-[400px] w-full bg-[#0a0a0c] rounded-2xl overflow-hidden flex items-center justify-center border border-white/5 group/vis shadow-2xl">
                     
                     {/* Background Effects */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(109,40,217,0.1),transparent_70%)]" />
@@ -611,10 +608,10 @@ export const ProjectShowcase: React.FC = () => {
         <TiltCard className="rounded-3xl">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-l from-blue-600/20 to-violet-600/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700 -z-10"></div>
 
-            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-16 items-center p-8 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-md z-10">
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center p-5 md:p-8 rounded-3xl border border-white/5 bg-black/20 backdrop-blur-md z-10">
                 
                 {/* Visual Side with Live View */}
-                <div className="relative h-[500px] glass-panel rounded-2xl overflow-hidden flex items-center justify-center border border-white/10 shadow-2xl bg-black group-hover:shadow-[0_0_60px_rgba(99,102,241,0.2)] transition-all duration-500 group/flux-visual">
+                <div className="relative h-[500px] glass-panel rounded-2xl overflow-hidden flex items-center justify-center border border-white/10 shadow-2xl bg-black group-hover:shadow-[0_0_60px_rgba(99,102,241,0.2)] transition-all duration-500 group/flux-visual w-full">
                     
                     {/* Live Iframe Background - Disabled interaction with pointer-events-none */}
                     <iframe 
@@ -629,7 +626,7 @@ export const ProjectShowcase: React.FC = () => {
                     <FluxParticles />
 
                     {/* Circular Core - Kept decorative animation as requested */}
-                    <div className="relative w-64 h-64 transform group-hover:scale-105 transition-all duration-700 z-10 opacity-10 group-hover/flux-visual:opacity-5 pointer-events-none">
+                    <div className="relative w-64 h-64 transform scale-90 md:scale-100 group-hover:scale-105 transition-all duration-700 z-10 opacity-10 group-hover/flux-visual:opacity-5 pointer-events-none">
                         <div className="absolute inset-0 rounded-full border border-indigo-500/30 border-t-white/80 animate-[spin_3s_linear_infinite]"></div>
                         <div className="absolute inset-4 rounded-full border border-violet-500/30 border-b-white/50 animate-[spin_5s_linear_infinite_reverse]"></div>
                         <div className="absolute inset-8 rounded-full border border-blue-500/20 border-l-blue-300/60 animate-[spin_7s_linear_infinite]"></div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { LayoutDashboard, Network } from 'lucide-react';
 
@@ -40,8 +39,8 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onOpenApi
              </button>
         </div>
 
-        {/* Text Container with Transitions (Centered) */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex items-center justify-center pointer-events-none z-30">
+        {/* Text Container with Transitions (Centered) - HIDDEN ON MOBILE TO PREVENT OVERLAP */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full hidden md:flex items-center justify-center pointer-events-none z-30">
           
           {/* Initial State: Fear Your Life */}
           <span 
@@ -54,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onOpenApi
              <span className="text-white/90 animate-pulse-glow-text">LIFE</span>
           </span>
 
-          {/* Scrolled State: NSD-CORE/17B */}
+          {/* Scrolled State: NSD-CORE/70B */}
           <span 
             className={`absolute transition-all duration-700 transform text-sm font-bold tracking-[0.15em] ${
               scrolled ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-10 opacity-0 blur-sm'
@@ -64,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onOpenApi
                NSD-CORE
              </span>
              <span className="text-violet-500 animate-subtle-breathe drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
-               /17B
+               /70B
              </span>
           </span>
 
