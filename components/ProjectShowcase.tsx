@@ -1,6 +1,7 @@
 
+
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquareCode, Aperture, Zap, Box, GitBranch, Layers, ExternalLink, Loader2, Bot, PenTool, Settings, Activity, Cpu, Wifi, Users, Database, Sparkles, Code2, FileJson, Terminal } from 'lucide-react';
+import { MessageSquareCode, Aperture, Zap, Box, GitBranch, Layers, ExternalLink, Loader2, Bot, PenTool, Settings, Activity, Cpu, Wifi, Users, Database, Sparkles, Code2, FileJson, Terminal, Eye, Mic, Monitor, Scan, Sun, Music } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 
 // 3D Tilt Wrapper Component with Holographic Overlay
@@ -143,41 +144,162 @@ const SynthesisParticles: React.FC = () => {
     );
 };
 
+const HeliosVisual: React.FC = () => {
+    return (
+        <div className="absolute inset-0 overflow-hidden rounded-2xl bg-[#050507] flex items-center justify-center">
+             {/* Aurora Background - Teal/Cyan shifted */}
+             <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/10 via-cyan-500/10 to-emerald-500/10 animate-pulse-slow mix-blend-screen" />
+             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+
+             {/* Stardust */}
+             <div className="absolute inset-0">
+                {[...Array(20)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute rounded-full bg-teal-100/40 blur-[1px]"
+                        style={{
+                            top: `${Math.random() * 100}%`,
+                            left: `${Math.random() * 100}%`,
+                            width: `${Math.random() * 2 + 1}px`,
+                            height: `${Math.random() * 2 + 1}px`,
+                            animation: `float ${10 + Math.random() * 20}s ease-in-out infinite`,
+                            opacity: Math.random() * 0.7
+                        }}
+                    />
+                ))}
+             </div>
+
+             {/* Central Orb - Enhanced Pulsating */}
+             <div className="relative z-10">
+                 {/* Outer Glow */}
+                 <div className="absolute inset-[-60px] bg-teal-500/20 rounded-full blur-[60px] animate-pulse-slow" />
+                 <div className="absolute inset-[-30px] bg-cyan-400/20 rounded-full blur-[40px] animate-pulse-glow" style={{ animationDelay: '0.5s' }} />
+
+                 {/* Core Orb */}
+                 <div className="w-32 h-32 rounded-full bg-gradient-to-br from-teal-200/10 to-cyan-200/5 backdrop-blur-md border border-teal-500/20 shadow-[0_0_50px_rgba(45,212,191,0.2)] flex items-center justify-center relative overflow-hidden group/orb animate-subtle-breathe">
+                      <div className="absolute inset-0 bg-gradient-to-t from-teal-500/30 to-transparent opacity-60" />
+                      <div className="w-full h-full absolute top-0 left-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent)]" />
+                      
+                      {/* Inner breathing core */}
+                      <div className="w-16 h-16 bg-teal-100/20 rounded-full blur-xl animate-pulse-glow" style={{ animationDuration: '3s' }} />
+                      
+                      {/* Extra Ripple effect */}
+                       <div className="absolute inset-0 rounded-full border border-teal-500/30 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite] opacity-50" />
+                 </div>
+             </div>
+        </div>
+    );
+};
+
+const SpecterVisual: React.FC = () => {
+    return (
+        <div className="absolute inset-0 overflow-hidden rounded-2xl bg-black flex items-center justify-center">
+             {/* Red Aesthetic Background */}
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15),transparent_70%)]" />
+             <div className="absolute inset-0 bg-[linear-gradient(rgba(50,0,0,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(50,0,0,0.2)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20" />
+             
+             {/* Scanlines */}
+             <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none opacity-40 z-10" />
+             
+             {/* Central Eye */}
+             <div className="relative w-full h-full flex items-center justify-center z-20">
+                 <div className="relative w-40 h-40 flex items-center justify-center">
+                     {/* Pulsing Rings */}
+                     <div className="absolute inset-0 border border-red-600/30 rounded-full animate-[spin_12s_linear_infinite]" />
+                     <div className="absolute inset-4 border border-red-500/20 rounded-full border-t-red-500 animate-[spin_8s_linear_infinite_reverse]" />
+                     <div className="absolute inset-10 border border-red-900/50 rounded-full animate-pulse" />
+                     
+                     {/* The Eye Core */}
+                     <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-900 rounded-full shadow-[0_0_50px_rgba(220,38,38,0.6)] animate-pulse-glow relative z-10 flex items-center justify-center border border-red-500/50">
+                        <div className="w-6 h-6 bg-black/80 rounded-full blur-[2px]" />
+                        <div className="absolute top-3 right-4 w-2 h-1 bg-white/40 rotate-45 blur-[1px] rounded-full" />
+                     </div>
+                 </div>
+             </div>
+
+             {/* Audio Visualization Bars (Decorative) */}
+             <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-end gap-1 h-12">
+                 {[...Array(10)].map((_, i) => (
+                    <div 
+                        key={i} 
+                        className="w-1 bg-red-500/50 rounded-full" 
+                        style={{
+                            height: `${Math.random() * 100}%`,
+                            animation: `pulse 0.${5+i}s ease-in-out infinite`
+                        }} 
+                    />
+                 ))}
+             </div>
+
+             {/* HUD overlays - Removed as requested */}
+             <div className="absolute top-6 left-6 flex flex-col gap-1.5 text-[10px] font-mono text-red-500/80 z-30 tracking-wider">
+                 <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]" /> REC_LIVE</span>
+             </div>
+        </div>
+    )
+}
+
 const SynthesisTelemetry: React.FC = () => {
     const BASE_PROMPTS = 485448;
     const BASE_USERS = 1287;
 
-    const [stats, setStats] = useState({ prompts: BASE_PROMPTS, users: BASE_USERS });
+    const [prompts, setPrompts] = useState(BASE_PROMPTS);
+    const [users, setUsers] = useState(BASE_USERS);
 
     useEffect(() => {
         // Initialize from localStorage or base values
-        let currentPrompts = BASE_PROMPTS;
-        let currentUsers = BASE_USERS;
-        
         const storedStats = localStorage.getItem('nsd_synthesis_stats');
         if (storedStats) {
             try {
                 const parsed = JSON.parse(storedStats);
-                if (parsed.prompts > currentPrompts) currentPrompts = parsed.prompts;
-                if (parsed.users > currentUsers) currentUsers = parsed.users;
+                if (parsed.prompts && parsed.prompts > BASE_PROMPTS) setPrompts(parsed.prompts);
+                if (parsed.users) setUsers(parsed.users);
             } catch (e) {
                 console.error("Failed to parse telemetry", e);
             }
         }
+    }, []);
 
-        setStats({ prompts: currentPrompts, users: currentUsers });
+    // Save to local storage whenever they change
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            localStorage.setItem('nsd_synthesis_stats', JSON.stringify({ prompts, users }));
+        }, 500);
+        return () => clearTimeout(timer);
+    }, [prompts, users]);
 
+    // Prompts Update Loop (Slower, steady growth)
+    useEffect(() => {
         const interval = setInterval(() => {
-            setStats(prev => {
-                const nextPrompts = prev.prompts + Math.floor(Math.random() * 4); 
-                const nextUsers = prev.users + (Math.random() > 0.7 ? 1 : 0); 
-
-                const nextStats = { prompts: nextPrompts, users: nextUsers };
-                localStorage.setItem('nsd_synthesis_stats', JSON.stringify(nextStats));
-                return nextStats;
-            });
-        }, 2500);
+            setPrompts(prev => prev + Math.floor(Math.random() * 3) + 1); 
+        }, 3500); 
         return () => clearInterval(interval);
+    }, []);
+
+    // Users Update Loop (Variable timing, fluctuates up and down)
+    useEffect(() => {
+        let timeoutId: ReturnType<typeof setTimeout>;
+
+        const updateUsers = () => {
+            setUsers(prev => {
+                // Fluctuation: -4 to +7
+                const change = Math.floor(Math.random() * 12) - 4; 
+                let next = prev + change;
+                
+                // Bounds to keep it realistic
+                if (next < 800) next = 800 + Math.floor(Math.random() * 50);
+                
+                return next;
+            });
+            
+            // Random delay between 1s and 3s for organic feel
+            const nextDelay = 1000 + Math.random() * 2000;
+            timeoutId = setTimeout(updateUsers, nextDelay);
+        };
+
+        timeoutId = setTimeout(updateUsers, 2000);
+        
+        return () => clearTimeout(timeoutId);
     }, []);
 
     return (
@@ -189,7 +311,7 @@ const SynthesisTelemetry: React.FC = () => {
                     <Database className="w-3 h-3" /> <span className="tracking-widest uppercase opacity-70">Refined Prompts</span>
                 </div>
                 <div className="flex items-end gap-2">
-                     <span className="font-bold text-2xl text-white leading-none tracking-tight">{stats.prompts.toLocaleString()}</span>
+                     <span className="font-bold text-2xl text-white leading-none tracking-tight">{prompts.toLocaleString()}</span>
                 </div>
                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-1">
                      <div className="h-full bg-gradient-to-r from-violet-600 to-fuchsia-500 w-3/4 animate-pulse"></div>
@@ -201,10 +323,10 @@ const SynthesisTelemetry: React.FC = () => {
                     <Users className="w-3 h-3" /> <span className="tracking-widest uppercase opacity-70">Active Users</span>
                 </div>
                 <div className="flex items-end gap-2">
-                     <span className="font-bold text-2xl text-white leading-none tracking-tight">{stats.users.toLocaleString()}</span>
+                     <span className="font-bold text-2xl text-white leading-none tracking-tight">{users.toLocaleString()}</span>
                 </div>
                 <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden mt-1">
-                    <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 w-1/2 animate-pulse" style={{width: `${(stats.users / 2000) * 100}%`}}></div>
+                    <div className="h-full bg-gradient-to-r from-amber-500 to-orange-500 w-1/2 animate-pulse" style={{width: `${(users / 2000) * 100}%`}}></div>
                 </div>
              </div>
         </div>
@@ -313,7 +435,149 @@ export const ProjectShowcase: React.FC = () => {
   return (
     <div className="w-full max-w-7xl mx-auto px-6 pb-24 space-y-24">
       
-      {/* Project 1: F&Q // SYNTHESIS CORE */}
+      {/* Project 1: Helios (New) */}
+      <section id="project-helios" className="relative group scroll-mt-32">
+         <TiltCard className="rounded-3xl">
+            {/* Aurora Atmospheric Glow - Teal */}
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-teal-500/10 via-cyan-500/10 to-emerald-500/10 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700 -z-10"></div>
+            
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center p-5 md:p-8 rounded-3xl border border-white/5 bg-[#050507]/90 backdrop-blur-xl z-10">
+                
+                {/* Content Side - Left on Desktop */}
+                <div className="order-2 lg:order-1 flex flex-col justify-center space-y-6 relative">
+                     <div className="space-y-6">
+                        <div className="flex flex-wrap items-center gap-3">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-mono animate-pulse-glow">
+                                <Sun className="w-3 h-3" />
+                                <span>SOMATIC AUDIO ENGINE</span>
+                            </div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-xs font-mono">
+                                <Activity className="w-3 h-3" />
+                                <span>NSD-SOLARIS</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white pb-3 leading-tight">
+                                HELIOS <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-cyan-300 to-teal-500 animate-pulse-glow-text drop-shadow-[0_0_15px_rgba(45,212,191,0.3)]">
+                                   SOMATIC AUDIO
+                                </span>
+                            </h2>
+                            <p className="text-lg text-white/60 leading-relaxed max-w-md">
+                                A generative somatic audio engine designed for deep state regulation. Fuses real-time ambient synthesis with hyper-realistic voice companionship to induce flow and sleep.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                             <FeatureItem 
+                                icon={<Music className="text-teal-400" />} 
+                                title={<span className="text-teal-200">Generative Ambience</span>} 
+                                desc="Real-time synth pads & drones" 
+                             />
+                             <FeatureItem 
+                                icon={<Mic className="text-teal-400" />} 
+                                title={<span className="text-teal-200">Somatic Voice</span>} 
+                                desc="Context-aware audio companionship" 
+                             />
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <a 
+                                href="https://helios.fearyour.life/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="group/btn relative px-8 py-3 rounded-xl bg-teal-600 text-black font-bold tracking-wide overflow-hidden transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_0_20px_rgba(13,148,136,0.3)] hover:shadow-[0_0_40px_rgba(13,148,136,0.5)]"
+                            >
+                                <span className="relative z-10 flex items-center gap-2">
+                                    Enter Helios <ExternalLink className="w-4 h-4" />
+                                </span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-cyan-400 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+                            </a>
+                        </div>
+                     </div>
+                </div>
+
+                {/* Visual Side: Helios Aurora & Orb - Right on Desktop */}
+                <div className="order-1 lg:order-2 relative h-[420px] lg:h-[480px] w-full bg-black rounded-2xl overflow-hidden flex items-center justify-center border border-teal-500/10 group/vis shadow-2xl">
+                    <HeliosVisual />
+                </div>
+            </div>
+         </TiltCard>
+      </section>
+
+      {/* Project 2: NSD-SPECTER */}
+      <section id="project-specter" className="relative group scroll-mt-32">
+         <TiltCard className="rounded-3xl">
+            {/* Red Atmospheric Glow for Specter */}
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-red-900/20 to-rose-600/20 opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-700 -z-10"></div>
+            
+            <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center p-5 md:p-8 rounded-3xl border border-white/5 bg-[#050507]/90 backdrop-blur-xl z-10">
+                
+                {/* Visual Side: Red Team Interface */}
+                <div className="order-1 relative h-[420px] lg:h-[480px] w-full bg-black rounded-2xl overflow-hidden flex items-center justify-center border border-red-500/10 group/vis shadow-2xl">
+                    <SpecterVisual />
+                </div>
+
+                {/* Content Side */}
+                <div className="order-2 flex flex-col justify-center space-y-6 relative">
+                     <div className="space-y-6">
+                        <div className="flex flex-wrap items-center gap-3">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono animate-pulse-glow">
+                                <Scan className="w-3 h-3" />
+                                <span>LIVE VISUAL CORTEX</span>
+                            </div>
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/50 text-xs font-mono">
+                                <Activity className="w-3 h-3" />
+                                <span>V3.5 STABLE</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white pb-3 leading-tight">
+                                NSD-SPECTER <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-rose-600 animate-pulse-glow-text drop-shadow-[0_0_15px_rgba(220,38,38,0.4)]">
+                                   VISION INTELLIGENCE
+                                </span>
+                            </h2>
+                            <p className="text-lg text-white/60 leading-relaxed max-w-md">
+                                A live multimodal intelligence dashboard. Fuses real-time audio, active computer vision, and screen telemetry into a unified cognitive stream. Powered by the NSD-SPECTER_VISION 3.5 expert model.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                             <FeatureItem 
+                                icon={<Eye className="text-red-400" />} 
+                                title={<span className="text-red-200">Active Vision</span>} 
+                                desc="Real-time camera & screen analysis" 
+                             />
+                             <FeatureItem 
+                                icon={<Monitor className="text-red-400" />} 
+                                title={<span className="text-red-200">Screen Telemetry</span>} 
+                                desc="Continuous frame interpretation" 
+                             />
+                        </div>
+
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <a 
+                                href="https://vision.fearyour.life/" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="group/btn relative px-8 py-3 rounded-xl bg-red-600 text-white font-bold tracking-wide overflow-hidden transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_40px_rgba(220,38,38,0.6)]"
+                            >
+                                <span className="relative z-10 flex items-center gap-2">
+                                    Enter Specter <ExternalLink className="w-4 h-4" />
+                                </span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+                            </a>
+                        </div>
+                     </div>
+                </div>
+            </div>
+         </TiltCard>
+      </section>
+
+      {/* Project 3: F&Q // SYNTHESIS CORE */}
       <section id="project-synthesis" className="relative group scroll-mt-32">
         
         <TiltCard className="rounded-3xl">
@@ -602,7 +866,7 @@ export const ProjectShowcase: React.FC = () => {
         </TiltCard>
       </section>
 
-      {/* Project 2: UMBRAX FLUX 3 */}
+      {/* Project 4: UMBRAX FLUX 3 */}
       <section id="project-flux" className="relative group scroll-mt-32">
         
         <TiltCard className="rounded-3xl">

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { LayoutDashboard, Network } from 'lucide-react';
 
@@ -22,7 +23,21 @@ export const Navbar: React.FC<NavbarProps> = ({ scrolled, onOpenLogin, onOpenApi
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-8 relative">
         
         {/* Left Side Navigation Shortcuts */}
-        <div className="hidden md:flex items-center gap-8 z-40">
+        <div className="hidden md:flex items-center gap-6 z-40">
+             <button 
+                onClick={() => onScrollTo('project-helios')} 
+                className="text-[10px] font-mono tracking-widest text-white/40 hover:text-teal-200 transition-all hover:scale-105 uppercase relative group"
+             >
+                Helios
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-teal-400 transition-all group-hover:w-full"></span>
+             </button>
+             <button 
+                onClick={() => onScrollTo('project-specter')} 
+                className="text-[10px] font-mono tracking-widest text-white/40 hover:text-red-400 transition-all hover:scale-105 uppercase relative group"
+             >
+                NSD-SPECTER
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-red-500 transition-all group-hover:w-full"></span>
+             </button>
              <button 
                 onClick={() => onScrollTo('project-synthesis')} 
                 className="text-[10px] font-mono tracking-widest text-white/40 hover:text-violet-300 transition-all hover:scale-105 uppercase relative group"
