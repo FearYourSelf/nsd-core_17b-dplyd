@@ -275,7 +275,7 @@ print(response.choices[0].message.content)`,
                     <div className="w-full md:flex-1 md:bg-black/30 md:backdrop-blur-md md:border-l border-white/5 flex flex-col relative shrink-0 md:h-full md:overflow-y-auto custom-scrollbar">
                         <div className="hidden md:block absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)] pointer-events-none" />
 
-                        {/* Tab Navigation - HIDDEN Integration on Mobile */}
+                        {/* Tab Navigation - Enabled on Mobile */}
                         <div className="relative z-20 flex items-center gap-1 px-6 pt-6 pb-2 border-b border-white/5 sticky top-0 bg-[#0a0a0c]/95 backdrop-blur-xl md:bg-transparent md:backdrop-blur-none shadow-lg md:shadow-none">
                             <button 
                                 onClick={() => setActiveTab('overview')}
@@ -289,7 +289,7 @@ print(response.choices[0].message.content)`,
                             </button>
                             <button 
                                 onClick={() => setActiveTab('integration')}
-                                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold tracking-wider transition-all ${
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold tracking-wider transition-all ${
                                     activeTab === 'integration' 
                                     ? 'bg-violet-500/20 text-violet-200 shadow-[0_0_15px_rgba(139,92,246,0.2)] border border-violet-500/20' 
                                     : 'text-white/40 hover:text-white hover:bg-white/5'
@@ -322,9 +322,9 @@ print(response.choices[0].message.content)`,
                                 </div>
                             )}
 
-                            {/* Integration Tab - Desktop Only */}
+                            {/* Integration Tab - Now All Devices */}
                             {activeTab === 'integration' && (
-                                <div className="hidden md:flex flex-col gap-6 animate-fade-in-up">
+                                <div className="flex flex-col gap-6 animate-fade-in-up">
                                     
                                     {/* Controls */}
                                     <div className="flex flex-col sm:flex-row justify-between gap-4 bg-black/40 p-3 rounded-xl border border-white/5 shrink-0">
@@ -367,7 +367,7 @@ print(response.choices[0].message.content)`,
                                     </div>
 
                                     {/* Code Window */}
-                                    <div className="relative w-full h-[400px] rounded-xl overflow-hidden border border-white/10 bg-[#050507] shadow-inner group/code flex flex-col shrink-0">
+                                    <div className="relative w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden border border-white/10 bg-[#050507] shadow-inner group/code flex flex-col shrink-0">
                                         <div className="absolute top-3 right-3 z-20">
                                             <button 
                                                 onClick={handleCopy}

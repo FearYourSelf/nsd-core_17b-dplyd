@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { Terminal, Box } from 'lucide-react';
 
@@ -5,7 +6,7 @@ import { Terminal, Box } from 'lucide-react';
 // Pure CSS 3D animated structure
 const Tesseract: React.FC = () => {
   return (
-    <div className="scene-3d w-[600px] h-[600px] md:w-[800px] md:h-[800px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none z-0">
+    <div className="scene-3d w-[600px] h-[600px] md:w-[800px] md:h-[800px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-1 pointer-events-none z-0">
       <div className="tesseract-wrapper w-full h-full relative">
         {/* Outer Cube */}
         <div className="cube-spinner w-full h-full absolute top-0 left-0 transform-style-3d">
@@ -174,6 +175,7 @@ const AliveText: React.FC<{ text: string }> = ({ text }) => {
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [scrollOpacity, setScrollOpacity] = useState(1);
 
@@ -186,6 +188,15 @@ export const Hero: React.FC = () => {
   const lastDragPos = useRef(0);
   const animationFrameId = useRef<number>(0);
   const [contentHeight, setContentHeight] = useState(0);
+
+  useEffect(() => {
+    // Force play video on mount for iOS/Android
+    if (videoRef.current) {
+        videoRef.current.play().catch(e => {
+            console.log("Auto-play prevented by browser policy", e);
+        });
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -292,13 +303,13 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <section ref={containerRef} className="relative w-full pt-32 pb-32 px-6 flex flex-col items-center text-center min-h-[90vh]">
+    <section ref={containerRef} className="relative w-full pt-20 md:pt-32 pb-32 px-6 flex flex-col items-center text-center min-h-[90vh]">
       
       {/* 3D Tesseract Background - Z-0 */}
       <Tesseract />
 
       {/* Black Hole Video Background - Z-10 */}
-      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[800px] h-[800px] md:w-[1200px] md:h-[1200px] z-10 pointer-events-none mix-blend-screen opacity-100">
+      <div className="absolute top-[35%] md:top-[45%] left-1/2 -translate-x-1/2 -translate-y-[50%] w-[800px] h-[800px] md:w-[1200px] md:h-[1200px] z-10 pointer-events-none mix-blend-screen opacity-100">
         <div 
             className="w-full h-full rounded-full overflow-hidden relative"
             style={{ 
@@ -312,11 +323,14 @@ export const Hero: React.FC = () => {
             {/* Overlay to blend edges */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/80 z-20"></div>
             <video 
+                ref={videoRef}
                 autoPlay 
                 loop 
                 muted 
-                playsInline 
-                className="w-full h-full object-cover scale-125"
+                playsInline={true}
+                controls={false}
+                disablePictureInPicture
+                className="w-full h-full object-cover scale-125 pointer-events-none"
             >
                 <source src="https://pub-a1b327e0f0794695b6f7d05baa938672.r2.dev/q-c3d7becf.webm" type="video/webm" />
             </video>
@@ -334,7 +348,7 @@ export const Hero: React.FC = () => {
       
       {/* Header Content - Z-30 (Highest) */}
       <div 
-        className="relative z-30 flex flex-col items-center pointer-events-none transition-opacity duration-300 will-change-opacity mt-12 mb-[380px] md:mb-[450px]"
+        className="relative z-30 flex flex-col items-center pointer-events-none transition-opacity duration-300 will-change-opacity mt-4 md:mt-12 mb-[240px] md:mb-[450px]"
         style={{ opacity: scrollOpacity }} 
       >
         <div className="mb-8 animate-fade-in-up">
@@ -393,13 +407,13 @@ export const Hero: React.FC = () => {
                   className="absolute top-0 left-0 w-full flex flex-col will-change-transform select-none"
                >
                   {/* Content Duplication for seamless scroll */}
-                  <div ref={contentRef} className="flex-shrink-0 p-8 md:p-12 max-w-none w-full">
+                  <div ref={contentRef} className="flex-shrink-0 p-4 md:p-12 max-w-none w-full">
                      <div className="font-mono text-sm md:text-base md:leading-relaxed text-white/60 whitespace-pre-wrap">
                         {renderAliveContent()}
                      </div>
                   </div>
                   
-                  <div className="flex-shrink-0 p-8 md:p-12 max-w-none w-full">
+                  <div className="flex-shrink-0 p-4 md:p-12 max-w-none w-full">
                      <div className="font-mono text-sm md:text-base md:leading-relaxed text-white/60 whitespace-pre-wrap">
                         {renderAliveContent()}
                      </div>
